@@ -5,16 +5,23 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.compass.CompassOverlay;
 
 import java.util.ArrayList;
 
@@ -43,8 +50,11 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         map = (MapView) findViewById(R.id.map);
-        map.setTileSource(TileSourceFactory.MAPNIK);
+       // View inflater = null;
+       // View v = inflater.inflate(R.layout.recyclerview, null);
+       // map = v.findViewById(R.id.map);
 
+        map.setTileSource(TileSourceFactory.MAPNIK);
 
         
         requestPermissionsIfNecessary(new String[] {
@@ -62,7 +72,70 @@ public class MainActivity extends AppCompatActivity{
         GeoPoint startPoint = new GeoPoint(41.3274812,19.8169882);
         mapController.setCenter(startPoint);
 
+//your items
+        ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
+        items.add(new OverlayItem("Title", "Description", new GeoPoint(41.3274812,19.8169882))); // Lat/Lon decimal degrees
+        final DisplayMetrics dm = ctx.getResources().getDisplayMetrics();
+/*        final ImageView image = (ImageView) findViewById(R.id.image);
+        IconOverlay iOverlay = new IconOverlay(new GeoPoint(0.0d,0.0d), image.getDrawable());*/
 
+//the overlay
+        ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(items,
+                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+                    private CompassOverlay mCompassOverlay;
+
+/*                    @Override
+                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
+                        MinimapOverlay mMinimapOverlay = new MinimapOverlay(ctx, map.getTileRequestCompleteHandler());
+                        mMinimapOverlay.setWidth(dm.widthPixels / 5);
+                        mMinimapOverlay.setHeight(dm.heightPixels / 5);
+//optionally, you can set the minimap to a different tile source
+//mMinimapOverlay.setTileSource(....);
+                        map.getOverlays().add(mMinimapOverlay);
+                        //next add
+                        this.mCompassOverlay = new CompassOverlay(ctx, new InternalCompassOrientationProvider(ctx), map);
+                        this.mCompassOverlay.enableCompass();
+                        map.getOverlays().add(this.mCompassOverlay);
+                        return true;
+                    }*/
+
+                    @Override
+                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
+                        setContentView(R.layout.recycler_main);
+                        MyListData[] myListData = new MyListData[] {
+                                new MyListData("Email", android.R.drawable.ic_dialog_email),
+                                new MyListData("Info", android.R.drawable.ic_dialog_info),
+                                new MyListData("Delete", android.R.drawable.ic_delete),
+                                new MyListData("Dialer", android.R.drawable.ic_dialog_dialer),
+                                new MyListData("Alert", android.R.drawable.ic_dialog_alert),
+                                new MyListData("Map", android.R.drawable.ic_dialog_map),
+                                new MyListData("Email", android.R.drawable.ic_dialog_email),
+                                new MyListData("Info", android.R.drawable.ic_dialog_info),
+                                new MyListData("Delete", android.R.drawable.ic_delete),
+                                new MyListData("Dialer", android.R.drawable.ic_dialog_dialer),
+                                new MyListData("Alert", android.R.drawable.ic_dialog_alert),
+                                new MyListData("Map", android.R.drawable.ic_dialog_map),
+                                new MyListData("Xhoel", android.R.drawable.star_big_on)
+                        };
+
+                        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+                        MyListAdapter adapter = new MyListAdapter(myListData);
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+                        recyclerView.setAdapter(adapter);
+                        return true;
+                    }
+
+
+
+                    @Override
+                    public boolean onItemLongPress(final int index, final OverlayItem item) {
+                        return false;
+                    }
+                }, ctx);
+        mOverlay.setFocusItemsOnTap(true);
+
+        map.getOverlays().add(mOverlay);
 
     }
 
@@ -119,5 +192,7 @@ public class MainActivity extends AppCompatActivity{
                     REQUEST_PERMISSIONS_REQUEST_CODE);
         }
     }
+
+
 
 }
