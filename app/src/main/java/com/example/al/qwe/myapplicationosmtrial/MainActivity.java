@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -99,7 +102,7 @@ public class MainActivity extends AppCompatActivity{
                         return true;
                     }*/
 
-                    @Override
+/*                    @Override
                     public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
                         setContentView(R.layout.recycler_main);
                         MyListData[] myListData = new MyListData[] {
@@ -123,6 +126,70 @@ public class MainActivity extends AppCompatActivity{
                         recyclerView.setHasFixedSize(true);
                         recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
                         recyclerView.setAdapter(adapter);
+                        return true;
+                    }*/
+
+                    @Override
+                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
+                        setContentView(R.layout.tablayout_main);
+                        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+                        ViewPager2 viewPager = (ViewPager2) findViewById(R.id.view_pager);
+                        TabLayoutMediator.TabConfigurationStrategy tabConfigurationStrategy = new TabLayoutMediator.TabConfigurationStrategy() {
+
+                            @Override
+                            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                                tab.setText(String.valueOf(position+1));
+                            }
+
+                        };
+                        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout,viewPager,tabConfigurationStrategy);
+                        tabLayoutMediator.attach();
+
+
+
+
+
+
+
+
+
+              /* ViewPager viewPager;
+              viewPager= (ViewPager) findViewById(R.id.view_pager);
+               viewPager.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                            @Override
+                            public void onTabSelected(TabLayout.Tab tab) {
+                                // Fragment fragment = null;
+                                switch (tab.getPosition()) {
+                                    case 0:
+                                        fragment[0] = new HomeFragment();
+                                        break;
+                                    case 1:
+                                        fragment[0] = new JavaFragment();
+                                        break;
+                                    case 2:
+                                        fragment[0] = new AndroidFragment();
+                                        break;
+                                    case 3:
+                                        fragment[0] = new PhpFragment();
+                                        break;
+                                }
+                                FragmentManager fm = getSupportFragmentManager();
+                                FragmentTransaction ft = fm.beginTransaction();
+                                ft.replace(R.id.frameLayout, fragment[0]);
+                                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                ft.commit();
+                            }
+
+                            @Override
+                            public void onTabUnselected(TabLayout.Tab tab) {
+
+                            }
+
+                            @Override
+                            public void onTabReselected(TabLayout.Tab tab) {
+
+                            }
+                        });*/
                         return true;
                     }
 

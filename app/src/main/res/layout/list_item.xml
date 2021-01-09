@@ -25,4 +25,8 @@
         android:gravity="center_vertical"
         android:textSize="16sp"/>
 
+   <!-- <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/activity_main" />-->
 </RelativeLayout>
