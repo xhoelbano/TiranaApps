@@ -39,4 +39,10 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-android:6.1.1'
     implementation 'org.osmdroid:osmdroid-wms:6.1.1'
     implementation 'org.osmdroid:osmdroid-geopackage:6.1.1'
+    implementation "com.github.parse-community.Parse-SDK-Android:parse:1.26.0"
+
+}
+
+repositories {
+    maven { url 'https://jitpack.io' }
 }
