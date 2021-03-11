@@ -7,9 +7,11 @@
     <string name="back4app_app_id">nHGrhrzWJ7kaOT0ArkXdfZEp0h8qfSfcjmf6aNKS</string>
     <string name="back4app_client_key">S9gP8ROeLlYrWGZKruclgDgFw9qbI4fTFQgyJowp</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
-    <string name="large_text">
+    <string name="large_text"></string>
 
-    </string>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
     <string name="action_settings">Settings</string>
 
     <!--    <string name="back4app_app_id">YUoEGpvjSVu17y0DKCSjZrhEaXz7f1kfup9bPEOb</string>
