@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,12 +45,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map = null;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private List<Marker> markerList = new ArrayList<>();
+    final List<Marker> markerList = new ArrayList<>();
     private ActionBarDrawerToggle mToggle;
     final List<GeoPoint> points = new ArrayList<>();
 
@@ -60,14 +61,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        drawerLayout = findViewById(R.id.drawer_layout);
+ /*       drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
 
         mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        navigationView.setNavigationItemSelectedListener(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
+       // navigationView.setNavigationItemSelectedListener(this);
 
 
 
@@ -258,44 +259,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     //there are problems with item selection, I have defined methods to get item selection but they does not work when i run the code
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(mToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
+        int id = item.getItemId();
         //actual code to animate to marker in map , when an item is selected from navigation bar
-/*        for(int i=0; i< markerList.size(); i++ ) {
-            if (markerList.get(i).getTitle().equals(item.getTitle())) {
+       for(int i=0; i< markerList.size(); i++ ) {
+            if (item.getTitle().equals(markerList.get(i).getTitle())) {
                 map.getController().animateTo(points.get(i));
                 markerList.get(i).showInfoWindow();
                 break;
             }
-        }*/
-
-        //test code - testing item selection
-        switch (item.getItemId()) {
-            case R.id.a:
-                Toast.makeText(MainActivity.this, " Item 1 u selektua", Toast.LENGTH_LONG).show(); //show a toast when an item is selected
-                break;
-            case R.id.b:
-                Toast.makeText(MainActivity.this, " Item 2 u selektua", Toast.LENGTH_LONG).show(); //show a toast when an item is selected
-                break;
-            case R.id.c:
-                Toast.makeText(MainActivity.this, " Item 3 u selektua", Toast.LENGTH_LONG).show(); //show a toast when an item is selected
-                break;
         }
 
-
-
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
 
