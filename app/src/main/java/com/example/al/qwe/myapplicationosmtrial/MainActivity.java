@@ -8,16 +8,21 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.navigation.NavigationView;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -32,24 +37,44 @@ import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map = null;
-    final List<Marker> markerList = new ArrayList<>();
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private List<Marker> markerList = new ArrayList<>();
+    private ActionBarDrawerToggle mToggle;
     final List<GeoPoint> points = new ArrayList<>();
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Test BACK4App database connection
         setContentView(R.layout.activity_main);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
+        mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+
+
+
+
+        //Test BACK4App database connection
         ParseObject firstObject = new  ParseObject("FirstClass");
         firstObject.put("message","Hey ! First message from android. Parse is now connected");
         firstObject.saveInBackground(e -> {
@@ -89,7 +114,7 @@ public class MainActivity extends AppCompatActivity{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         });
 
-        map.setMinZoomLevel(7.5);
+        map.setMinZoomLevel(12.0);
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
         IMapController mapController = map.getController();
@@ -98,80 +123,81 @@ public class MainActivity extends AppCompatActivity{
         //mapController.setCenter(startPoint);
 
 
+
+
+
         final Drawable drawable = getResources().getDrawable(R.drawable.marker_default);
-
-
-
 
 
         // Configure Query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Drejtori");
 
         query.findInBackground(new FindCallback<ParseObject>() {
-                                   @Override
-                                   public void done(List<ParseObject> objects, final ParseException e) {
-                                       if (e == null) {
-                                           // Adding objects into the Array
-                                           mapController.setCenter(new GeoPoint(objects.get(0).getParseGeoPoint("coordinates").getLatitude(), objects.get(0).getParseGeoPoint("coordinates").getLongitude()));
-                                           for (int i = 0; i < objects.size(); i++) {
-                                               GeoPoint gp = new GeoPoint(objects.get(i).getParseGeoPoint("coordinates").getLatitude(), objects.get(i).getParseGeoPoint("coordinates").getLongitude());
-                                               points.add(gp);
-                                               Marker startMarker = new Marker(map);
-                                               startMarker.setPosition(gp);
-                                               startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                                               startMarker.setIcon(drawable);
-                                               startMarker.setTitle(objects.get(i).getString("name"));
-                                               String location = (objects.get(i).getString("location"));
-                                               String markerContact = ("Website: " + objects.get(i).getString("website") + "\nCelular: " + objects.get(i).getString("phone") + "\nE-mail: " + objects.get(i).getString("email"));
-                                               String snippet = ("Location: "+ objects.get(i).getString("location") + "\n " + markerContact);
-                                               startMarker.setSnippet(snippet);
+            @Override
+            public void done(List<ParseObject> objects, final ParseException e) {
+                if (e == null) {
+                    // Adding objects into the Array
+                    mapController.setCenter(new GeoPoint(objects.get(0).getParseGeoPoint("coordinates").getLatitude(), objects.get(0).getParseGeoPoint("coordinates").getLongitude()));
+                    for (int i = 0; i < objects.size(); i++) {
+                        GeoPoint gp = new GeoPoint(objects.get(i).getParseGeoPoint("coordinates").getLatitude(), objects.get(i).getParseGeoPoint("coordinates").getLongitude());
+                        points.add(gp);
+                        Marker startMarker = new Marker(map);
+                        startMarker.setPosition(gp);
+                        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                        startMarker.setIcon(drawable);
+                        startMarker.setTitle(objects.get(i).getString("name"));
+                        String location = (objects.get(i).getString("location"));
+                        String markerContact = ("Website: " + objects.get(i).getString("website") + "\nCelular: " + objects.get(i).getString("phone") + "\nE-mail: " + objects.get(i).getString("email"));
+                        String snippet = ("Location: "+ objects.get(i).getString("location") + "\n " + markerContact);
+                        startMarker.setSnippet(snippet);
 
-                                               String longDescription = objects.get(i).getString("long_description");
-                                               markerList.add(startMarker);
+                        String longDescription = objects.get(i).getString("long_description");
+                        markerList.add(startMarker);
 
-                                               startMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
-                                                   @Override
-                                                   public boolean onMarkerClick(Marker marker, MapView mapView) {
-                                                       map.getController().animateTo(gp); //animate to selected marker
-                                                       Toast.makeText(MainActivity.this, marker.getTitle() + " u selektua", Toast.LENGTH_LONG).show(); //show a toast when a marker is selected
-                                                       marker.showInfoWindow(); // show marker info
+                        startMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+                            @Override
+                            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                                map.getController().animateTo(gp); //animate to selected marker
+                                Toast.makeText(MainActivity.this, marker.getTitle() + " u selektua", Toast.LENGTH_LONG).show(); //show a toast when a marker is selected
+                                marker.showInfoWindow(); // show marker info
 
-                                                       String markerTitle = marker.getTitle();
-                                                       Intent i = new Intent(MainActivity.this, DetailsActivity.class);
-                                                       i.putExtra("title", markerTitle);
+                                String markerTitle = marker.getTitle();
+                                Intent i = new Intent(MainActivity.this, DetailsActivity.class);
+                                i.putExtra("title", markerTitle);
 
-                                                       String markerLocation = location;
-                                                       i.putExtra("loc", markerLocation);
+                                String markerLocation = location;
+                                i.putExtra("loc", markerLocation);
 
-                                                       String markerDscp = longDescription;
-                                                       i.putExtra("long_dscp", markerDscp);
+                                String markerDscp = longDescription;
+                                i.putExtra("long_dscp", markerDscp);
 
-                                                       i.putExtra("contact", markerContact);
+                                i.putExtra("contact", markerContact);
 
-                                                       startActivity(i);
-                                                       return true;
-                                                   }
-
-
-                                               });
-
-                                               //startMarker.setInfoWindow(new MarkerInfoWindow());
-                                               map.getOverlays().add(startMarker);
-                                           }
-                                       }
-                                       else {
-
-                                       }
-                                   }
-                               });
+                                startActivity(i);
+                                return true;
+                            }
 
 
-            //add compass
-            CompassOverlay overlay = new CompassOverlay(MainActivity.this, map);
-            overlay.setPointerMode(false);
-            overlay.enableCompass();
-            map.getOverlayManager().add(overlay);
-            map.invalidate();
+                        });
+
+                        //startMarker.setInfoWindow(new MarkerInfoWindow());
+                        map.getOverlays().add(startMarker);
+                    }
+                }
+                else {
+
+                }
+            }
+        });
+
+
+        //add compass
+        CompassOverlay overlay = new CompassOverlay(MainActivity.this, map);
+        overlay.setPointerMode(false);
+        overlay.enableCompass();
+        map.getOverlayManager().add(overlay);
+        map.invalidate();
+
 
 
 
@@ -231,27 +257,47 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+
+    //there are problems with item selection, I have defined methods to get item selection but they does not work when i run the code
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
-        @Override
-        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-            int id = item.getItemId();
-            for (int i = 0; i < markerList.size(); i++) {
-                if (item.getTitle().equals(markerList.get(i).getTitle())) {
-                    map.getController().animateTo(points.get(i));
-                    markerList.get(i).showInfoWindow();
-                    Toast.makeText(MainActivity.this, markerList.get(i).getTitle() + " u selektua", Toast.LENGTH_LONG).show(); //show a toast when a marker is selected
-
-                    break;
-                }
-
-            }
-            return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(mToggle.onOptionsItemSelected(item)) {
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        //actual code to animate to marker in map , when an item is selected from navigation bar
+/*        for(int i=0; i< markerList.size(); i++ ) {
+            if (markerList.get(i).getTitle().equals(item.getTitle())) {
+                map.getController().animateTo(points.get(i));
+                markerList.get(i).showInfoWindow();
+                break;
+            }
+        }*/
+
+        //test code - testing item selection
+        switch (item.getItemId()) {
+            case R.id.a:
+                Toast.makeText(MainActivity.this, " Item 1 u selektua", Toast.LENGTH_LONG).show(); //show a toast when an item is selected
+                break;
+            case R.id.b:
+                Toast.makeText(MainActivity.this, " Item 2 u selektua", Toast.LENGTH_LONG).show(); //show a toast when an item is selected
+                break;
+            case R.id.c:
+                Toast.makeText(MainActivity.this, " Item 3 u selektua", Toast.LENGTH_LONG).show(); //show a toast when an item is selected
+                break;
+        }
+
+
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+
+}
