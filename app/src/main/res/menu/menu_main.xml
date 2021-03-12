@@ -7,9 +7,51 @@
     <item
         android:title="Bashkia Tiranë"/>
     <item
-        android:title="Njeia Administrative nr.10"/>
+        android:title="Drejtoria e Ankimimeve"/>
     <item
-        android:title="Drejtoria e Përgjithshme e Menaxhimit Financiar"/>
+        android:title="Drejtoria e të Dhënave"/>
+    <item
+        android:title="Drejtoria e Investimeve të Punëve Publike"/>
+    <item
+        android:title="Drejtoria e Zhvillimit Ekonomik Rural"/>
+    <item
+        android:title="Drejtoria e Pastrimit dhe Mbetjeve Urbane"/>
+    <item
+        android:title="Drejtoria e Monitorimit të Taksës dhe Tarifave Vendore"/>
+    <item
+        android:title="Drejtoria e Marrëdhënieve me Jashtë"/>
+    <item
+        android:title="Drejtoria e Planifikimit të Territorit"/>
+    <item
+        android:title="Drejtoria e Arkivit Qendror dhe Protokollit"/>
+    <item
+        android:title="Sektori i Rrjeteve dhe Infrastrukturës së Serverave"/>
+    <item
+        android:title="Sektori i Zhvillimit të Mjeteve Programuese"/>
+    <item
+        android:title="Drejtoria e Teknologjisë së Informacionit dhe komunikimit"/>
+    <item
+        android:title="Drejtoria e Licensimit dhe Gjendjes Civile"/>
+    <item
+        android:title="Sektori i Opinioneve Qytetare"/>
+    <item
+        android:title="Drejtoria e Komunikimit me Qytetarët"/>
+    <item
+        android:title="Drejtoria e Vlerësimit të Përformancës, Masave Administrative dhe Motivimit të Stafit"/>
+    <item
+        android:title="Drejtoria e Monitorimit Financiar të Ndërmarrjeve dhe Sha-ve"/>
+    <item
+        android:title="Drejtoria e Koordinimit me Donatorët"/>
+    <item
+        android:title="Drejtoria e Promovimit dhe Zhvillimit të Industrisë së Turizmit"/>
+    <item
+        android:title="Drejtoria e Rinisë"/>
+    <item
+        android:title="Drejtoria e Kadastrës"/>
+    <item
+        android:title="Drejtoria e Buxhetit"/>
+
+
 
 
 

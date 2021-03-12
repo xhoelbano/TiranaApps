@@ -4,8 +4,11 @@
 
     <!-- Change the following strings as required -->
 
-    <string name="back4app_app_id">nHGrhrzWJ7kaOT0ArkXdfZEp0h8qfSfcjmf6aNKS</string>
-    <string name="back4app_client_key">S9gP8ROeLlYrWGZKruclgDgFw9qbI4fTFQgyJowp</string>
+<!--    <string name="back4app_app_id">nHGrhrzWJ7kaOT0ArkXdfZEp0h8qfSfcjmf6aNKS</string>
+    <string name="back4app_client_key">S9gP8ROeLlYrWGZKruclgDgFw9qbI4fTFQgyJowp</string>-->
+
+    <string name="back4app_app_id">b41RAkCrurWJfWfcoAycm1G1ZwqmBLPQus1ppO28</string>
+    <string name="back4app_client_key">lQOdeymC9nbTKnyqb5pvFGgoMT0zWBqaCYVzxiq1</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text"></string>
 

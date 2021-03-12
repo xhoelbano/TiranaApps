@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Drawable drawable = getResources().getDrawable(R.drawable.marker_default);
 
+        final String[] markerTitle = new String[2];
 
         // Configure Query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Drejtori");
@@ -149,32 +150,48 @@ public class MainActivity extends AppCompatActivity {
                         startMarker.setTitle(objects.get(i).getString("name"));
                         String location = (objects.get(i).getString("location"));
                         String markerContact = ("Website: " + objects.get(i).getString("website") + "\nCelular: " + objects.get(i).getString("phone") + "\nE-mail: " + objects.get(i).getString("email"));
-                        String snippet = ("Location: "+ objects.get(i).getString("location") + "\n " + markerContact);
+                        String snippet = ("Location: " + objects.get(i).getString("location") + "\n " + markerContact + "\nKlikoni serisht markerin per me teper:");
                         startMarker.setSnippet(snippet);
 
                         String longDescription = objects.get(i).getString("long_description");
                         markerList.add(startMarker);
 
+
                         startMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
                             @Override
                             public boolean onMarkerClick(Marker marker, MapView mapView) {
                                 map.getController().animateTo(gp); //animate to selected marker
-                                Toast.makeText(MainActivity.this, marker.getTitle() + " u selektua", Toast.LENGTH_LONG).show(); //show a toast when a marker is selected
                                 marker.showInfoWindow(); // show marker info
 
-                                String markerTitle = marker.getTitle();
-                                Intent i = new Intent(MainActivity.this, DetailsActivity.class);
-                                i.putExtra("title", markerTitle);
+                                markerTitle[0] = marker.getTitle();
+                                startMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+                                    @Override
+                                    public boolean onMarkerClick(Marker marker, MapView mapView) {
+                                        markerTitle[1] = marker.getTitle();
 
-                                String markerLocation = location;
-                                i.putExtra("loc", markerLocation);
+                                        if (markerTitle[0].equals(markerTitle[1]) ) {
+                                            map.getController().animateTo(gp); //animate to selected marker
+                                            Toast.makeText(MainActivity.this, marker.getTitle() + " u selektua", Toast.LENGTH_LONG).show(); //show a toast when a marker is selected
 
-                                String markerDscp = longDescription;
-                                i.putExtra("long_dscp", markerDscp);
+                                            String markerTitle = marker.getTitle();
+                                            Intent i = new Intent(MainActivity.this, DetailsActivity.class);
+                                            i.putExtra("title", markerTitle);
 
-                                i.putExtra("contact", markerContact);
+                                            String markerLocation = location;
+                                            i.putExtra("loc", markerLocation);
 
-                                startActivity(i);
+                                            String markerDscp = longDescription;
+                                            i.putExtra("long_dscp", markerDscp);
+
+                                            i.putExtra("contact", markerContact);
+
+                                            startActivity(i);
+                                            return true;
+                                        }
+                                        return false;
+                                    }
+                                });
+
                                 return true;
                             }
 
@@ -184,9 +201,6 @@ public class MainActivity extends AppCompatActivity {
                         //startMarker.setInfoWindow(new MarkerInfoWindow());
                         map.getOverlays().add(startMarker);
                     }
-                }
-                else {
-
                 }
             }
         });
