@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:id="@+id/drawer_layout">
+    android:id="@+id/drawer_layout"
+    android:outlineAmbientShadowColor="@color/milky">
 
 
 
@@ -18,9 +19,8 @@
         <org.osmdroid.views.MapView
             android:id="@+id/map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-
+            android:layout_height="match_parent"
+            />
     </FrameLayout>
 
 

@@ -147,11 +147,17 @@ public class MainActivity extends AppCompatActivity {
                         startMarker.setPosition(gp);
                         startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                         startMarker.setIcon(drawable);
+                        startMarker.setIcon(getResources().getDrawable(R.drawable.logo_marker));
+                        startMarker.setTitle("Start point");
                         startMarker.setTitle(objects.get(i).getString("name"));
                         String location = (objects.get(i).getString("location"));
-                        String markerContact = ("Website: " + objects.get(i).getString("website") + "\nCelular: " + objects.get(i).getString("phone") + "\nE-mail: " + objects.get(i).getString("email"));
-                        String snippet = ("Location: " + objects.get(i).getString("location") + "\n " + markerContact + "\nKlikoni serisht markerin per me teper:");
+                        String markerContact = ( "Website: " + objects.get(i).getString("website") + "\nCelular: " + objects.get(i).getString("phone") + "\nE-mail: " + objects.get(i).getString("email"));
+                       //String snippet = ("Location: " + objects.get(i).getString("location") + "\n " + markerContact + "\nKlikoni serisht markerin per me teper:");
+                        String snippet = ( objects.get(i).getString("location"));
                         startMarker.setSnippet(snippet);
+
+
+
 
                         String longDescription = objects.get(i).getString("long_description");
                         markerList.add(startMarker);
@@ -183,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                                             String markerDscp = longDescription;
                                             i.putExtra("long_dscp", markerDscp);
 
-                                            i.putExtra("contact", markerContact);
+                                           i.putExtra("contact", markerContact);
 
                                             startActivity(i);
                                             return true;
