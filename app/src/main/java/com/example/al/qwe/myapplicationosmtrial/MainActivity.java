@@ -9,10 +9,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +44,9 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
+import org.osmdroid.views.overlay.infowindow.InfoWindow;
+import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     final List<GeoPoint> points = new ArrayList<>();
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +74,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
-       // navigationView.setNavigationItemSelectedListener(this);
-
-
-
-
+        // navigationView.setNavigationItemSelectedListener(this);
 
 
         //Test BACK4App database connection
@@ -129,7 +131,8 @@ public class MainActivity extends AppCompatActivity {
 
         final Drawable drawable = getResources().getDrawable(R.drawable.marker_default);
 
-        final String[] markerTitle = new String[2];
+        //final String[] markerTitle = new String[2];
+        ArrayList<String> markerTitle = new ArrayList<>();
 
         // Configure Query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Drejtori");
@@ -145,19 +148,20 @@ public class MainActivity extends AppCompatActivity {
                         points.add(gp);
                         Marker startMarker = new Marker(map);
                         startMarker.setPosition(gp);
+
+                        // ktu therritet custom marker qe kemi krijuar me funx CustomMarkerInfoWindow
+                        startMarker.setInfoWindow(new CustomMarkerInfoWindow(map));
+
                         startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                        startMarker.setIcon(drawable);
+                        //startMarker.setIcon(drawable);
                         startMarker.setIcon(getResources().getDrawable(R.drawable.logo_marker));
-                        startMarker.setTitle("Start point");
+                        startMarker.setTitle(objects.get(i).getString("name"));
                         startMarker.setTitle(objects.get(i).getString("name"));
                         String location = (objects.get(i).getString("location"));
                         String markerContact = ( "Website: " + objects.get(i).getString("website") + "\nCelular: " + objects.get(i).getString("phone") + "\nE-mail: " + objects.get(i).getString("email"));
-                       //String snippet = ("Location: " + objects.get(i).getString("location") + "\n " + markerContact + "\nKlikoni serisht markerin per me teper:");
+                        //String snippet = ("Location: " + objects.get(i).getString("location") + "\n " + markerContact + "\nKlikoni serisht markerin per me teper:");
                         String snippet = ( objects.get(i).getString("location"));
                         startMarker.setSnippet(snippet);
-
-
-
 
                         String longDescription = objects.get(i).getString("long_description");
                         markerList.add(startMarker);
@@ -166,19 +170,24 @@ public class MainActivity extends AppCompatActivity {
                         startMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
                             @Override
                             public boolean onMarkerClick(Marker marker, MapView mapView) {
+                                final int[] counter = {0};
                                 map.getController().animateTo(gp); //animate to selected marker
+
                                 marker.showInfoWindow(); // show marker info
 
-                                markerTitle[0] = marker.getTitle();
+                                //markerTitle[0] = marker.getTitle();
+                                markerTitle.add(marker.getTitle());
                                 startMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
                                     @Override
                                     public boolean onMarkerClick(Marker marker, MapView mapView) {
-                                        markerTitle[1] = marker.getTitle();
-
-                                        if (markerTitle[0].equals(markerTitle[1]) ) {
+                                        //markerTitle[1] = marker.getTitle();
+                                        markerTitle.add(marker.getTitle());
+                                        counter[0]++;
+                                        if(counter[0]%2 != 0) {
+                                            marker.closeInfoWindow();
+                                            // if (markerTitle[0].equals(markerTitle[1]) ) {
                                             map.getController().animateTo(gp); //animate to selected marker
                                             Toast.makeText(MainActivity.this, marker.getTitle() + " u selektua", Toast.LENGTH_LONG).show(); //show a toast when a marker is selected
-
                                             String markerTitle = marker.getTitle();
                                             Intent i = new Intent(MainActivity.this, DetailsActivity.class);
                                             i.putExtra("title", markerTitle);
@@ -189,28 +198,28 @@ public class MainActivity extends AppCompatActivity {
                                             String markerDscp = longDescription;
                                             i.putExtra("long_dscp", markerDscp);
 
-                                           i.putExtra("contact", markerContact);
-
+                                            i.putExtra("contact", markerContact);
                                             startActivity(i);
                                             return true;
                                         }
-                                        return false;
-                                    }
-                                });
+                                        else {
+                                            marker.showInfoWindow();
+                                            return true;
+                                        }
+                                }
+
+                            });
 
                                 return true;
-                            }
+                        }
 
 
-                        });
-
-                        //startMarker.setInfoWindow(new MarkerInfoWindow());
-                        map.getOverlays().add(startMarker);
+                    });
+                    map.getOverlays().add(startMarker);
                     }
                 }
             }
         });
-
 
         //add compass
         CompassOverlay overlay = new CompassOverlay(MainActivity.this, map);
@@ -218,9 +227,6 @@ public class MainActivity extends AppCompatActivity {
         overlay.enableCompass();
         map.getOverlayManager().add(overlay);
         map.invalidate();
-
-
-
 
     }
 
@@ -281,17 +287,50 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
     }
 
-    //there are problems with item selection, I have defined methods to get item selection but they does not work when i run the code
+
+
+
+    public class CustomMarkerInfoWindow extends MarkerInfoWindow{
+
+        public CustomMarkerInfoWindow( MapView mapView) {
+            super(R.layout.my_bubble, mapView);
+        }
+        @Override
+        public void onOpen(Object item){
+            Marker m= (Marker) item;
+
+            ImageView iv= (ImageView) mView.findViewById(R.id.bubble_image);
+            iv.setImageResource(R.drawable.ic_launcher_foreground);
+
+            TextView title = (TextView) mView.findViewById(R.id.bubble_title);
+            title.setText(m.getTitle());
+            TextView snippet = (TextView) mView.findViewById(R.id.bubble_description);
+            snippet.setText(m.getSnippet());
+            Toast.makeText(MainActivity.this, m.getTitle() + " u selektua", Toast.LENGTH_LONG).show(); //show a toast when a marker is selected
+/*            // per te krijuar moreinfo icon ne infowindow
+
+            Button bt = (Button) mView.findViewById(R.id.bubble_moreinfo);
+            bt.setVisibility(View.VISIBLE);
+            bt.setOnClickListener(new Button.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(MainActivity.this, "Button working", Toast.LENGTH_SHORT).show();
+                }
+            });*/
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        //actual code to animate to marker in map , when an item is selected from navigation bar
-       for(int i=0; i< markerList.size(); i++ ) {
+        //actual code to animate to marker in map , when an item is selected from menu
+        for(int i=0; i< markerList.size(); i++ ) {
             if (item.getTitle().equals(markerList.get(i).getTitle())) {
                 map.getController().animateTo(points.get(i));
                 markerList.get(i).showInfoWindow();
@@ -301,7 +340,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
 }

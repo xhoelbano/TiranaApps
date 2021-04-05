@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="25dp"
         android:textSize="22sp"
-        android:paddingBottom="12sp"
+        android:paddingBottom="10sp"
         android:paddingTop="10sp"
         android:paddingLeft="12sp"
         android:textColor="@color/purple_blue"

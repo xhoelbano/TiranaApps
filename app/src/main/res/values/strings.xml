@@ -19,4 +19,11 @@
 
     <!--    <string name="back4app_app_id">YUoEGpvjSVu17y0DKCSjZrhEaXz7f1kfup9bPEOb</string>
     <string name="back4app_client_key">Tfub3X7Lt9iEhFPpaFplPhRvEajmCxGk3F72w3Om</string>-->
+
+        <string name="font_family_light">sans-serif-light</string>
+        <string name="font_family_medium">sans-serif-medium</string>
+        <string name="font_family_regular">sans-serif</string>
+        <string name="font_family_condensed">sans-serif-condensed</string>
+        <string name="font_family_black">sans-serif-black</string>
+        <string name="font_family_thin">sans-serif-thin</string>
 </resources>

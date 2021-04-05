@@ -2,58 +2,105 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+  <item android:icon="@drawable/ic_menu"
+      android:title="Drejtoritë"
+      app:showAsAction="ifRoom">
 
-    //insert items in same order as in database
+<menu>
+    //insert items in same order as in database just copy one item, add in the end and change only the title
+    <item android:title="Bashkia Tiranë"
+          android:icon="@drawable/ic_location"
+          app:showAsAction="never"/>
     <item
-        android:title="Bashkia Tiranë"/>
+        android:title="Drejtoria e Ankimimeve"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Ankimimeve"/>
+        android:title="Drejtoria e të Dhënave"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e të Dhënave"/>
+        android:title="Drejtoria e Investimeve të Punëve Publike"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Investimeve të Punëve Publike"/>
+        android:title="Drejtoria e Zhvillimit Ekonomik Rural"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Zhvillimit Ekonomik Rural"/>
+        android:title="Drejtoria e Pastrimit dhe Mbetjeve Urbane"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Pastrimit dhe Mbetjeve Urbane"/>
+        android:title="Drejtoria e Monitorimit të Taksës dhe Tarifave Vendore"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Monitorimit të Taksës dhe Tarifave Vendore"/>
+        android:title="Drejtoria e Marrëdhënieve me Jashtë"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Marrëdhënieve me Jashtë"/>
+        android:title="Drejtoria e Planifikimit të Territorit"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Planifikimit të Territorit"/>
+        android:title="Drejtoria e Arkivit Qendror dhe Protokollit"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Arkivit Qendror dhe Protokollit"/>
+        android:title="Sektori i Rrjeteve dhe Infrastrukturës së Serverave"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Sektori i Rrjeteve dhe Infrastrukturës së Serverave"/>
+        android:title="Sektori i Zhvillimit të Mjeteve Programuese"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Sektori i Zhvillimit të Mjeteve Programuese"/>
+        android:title="Drejtoria e Teknologjisë së Informacionit dhe komunikimit"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Teknologjisë së Informacionit dhe komunikimit"/>
+        android:title="Drejtoria e Licensimit dhe Gjendjes Civile"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Licensimit dhe Gjendjes Civile"/>
+        android:title="Sektori i Opinioneve Qytetare"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Sektori i Opinioneve Qytetare"/>
+        android:title="Drejtoria e Komunikimit me Qytetarët"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Komunikimit me Qytetarët"/>
+        android:title="Drejtoria e Vlerësimit të Përformancës, Masave Administrative dhe Motivimit të Stafit"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Vlerësimit të Përformancës, Masave Administrative dhe Motivimit të Stafit"/>
+        android:title="Drejtoria e Monitorimit Financiar të Ndërmarrjeve dhe Sha-ve"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Monitorimit Financiar të Ndërmarrjeve dhe Sha-ve"/>
+        android:title="Drejtoria e Koordinimit me Donatorët"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Koordinimit me Donatorët"/>
+        android:title="Drejtoria e Promovimit dhe Zhvillimit të Industrisë së Turizmit"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Promovimit dhe Zhvillimit të Industrisë së Turizmit"/>
+        android:title="Drejtoria e Rinisë"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Rinisë"/>
+        android:title="Drejtoria e Kadastrës"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
     <item
-        android:title="Drejtoria e Kadastrës"/>
-    <item
-        android:title="Drejtoria e Buxhetit"/>
+        android:title="Drejtoria e Buxhetit"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="never"/>
+</menu>
 
-
-
-
-
+  </item>
 
 </menu>
